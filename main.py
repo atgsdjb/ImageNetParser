@@ -28,17 +28,20 @@ def parserImageNetBBox():
         i = i + 1
 
 
+def deleteCompleted(tar):
+    pass
+
 def decodeJpeg(image):
     with tf.Session() as session:
         bmp = session.run(decode_jpeg(image))
     return bmp.shape[0],bmp.shape[1],bmp.shape[2], bmp.tobytes()
 
 
-def parserImageNetStorage(tar, clazz):
+def parserImageNetStorage(tarFile, clazz):
     print('subprocess start pid={}'.format(os.getpid()))
     dbHelper = MongoHelper('ImageNet', 'train', '')
     dbTotul = MongoHelper('ImageNet',"complete", '')
-    tar = TarReader(tar)
+    tar = TarReader(tarFile)
     i = 0
     starttime = datetime.datetime.now()
     for (_, n, tar) in tar:
@@ -56,6 +59,8 @@ def parserImageNetStorage(tar, clazz):
     dbTotul.insert(clazz=clazz,count=i)
     print()
     endtime = datetime.datetime.now() - starttime
+    #os.remove(tarFile)
+    deleteCompleted(tarFile)
     print('finish clazz={} duration={}'.format(clazz,endtime.seconds))
     return 1
 
@@ -83,6 +88,7 @@ if __name__ == '__main__':
         clazz = os.path.basename(tar)[:-4]
         if dbTotul.hashone(clazz=clazz):
             print('{} is complete',format(clazz))
+            deleteCompleted(tar)
             continue
         if len(tasks) < total_subprocess:
             task = multiprocessing.Process(target=parserImageNetStorage,args=(tar,clazz))

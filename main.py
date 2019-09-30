@@ -61,8 +61,9 @@ if __name__ == '__main__':
         task.start()
 
     for tar in os.walk(args.train):
-        q.put(tar)
-        print('.',end='|')
+        for t in tar:
+            q.put(tar)
+            print('.',end='|')
         # print(tar)
     print('queue is empyt={}'.format(q.empty()))
     q.put('exit')

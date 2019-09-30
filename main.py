@@ -61,7 +61,7 @@ if __name__ == '__main__':
 
     for tar in os.walk(args.train):
         q.put(tar)
-        print(tar)
+        # print(tar)
     q.put('exit')
     for task in tasks:
         task.join()

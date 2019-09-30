@@ -11,13 +11,17 @@ class TarReader:
 
     def __next__(self):
         info = self.tar.next()
+        if not info:
+            raise StopIteration()
         while True:
+            if not info:
+                raise StopIteration()
             if info.isdir():
                 info = self.tar.next()
                 continue
             break
         buf = self.tar.extractfile(info)
-        return (os.path.dirname(info.name) , os.path.basename(info.name),buf.read())
+        return os.path.dirname(info.name), os.path.basename(info.name), buf.read()
 
     def __del__(self):
         print('close....')

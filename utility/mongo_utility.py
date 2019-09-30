@@ -12,7 +12,7 @@ class MongoHelper:
         print(self.collection)
 
     def _check_(self,keys):
-        print(self, 'not implements')
+        pass
         return True
 
     def insert(self,**dict):

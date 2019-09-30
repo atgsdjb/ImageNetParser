@@ -26,7 +26,7 @@ def parserImageNetBBox():
 
 
 def parserImageNetStorage(queue,root):
-    print('subprocess start pid={}'.format(os.getppid()))
+    print('subprocess start pid={}'.format(os.getpid()))
     while True:
         try:
             d = queue.get(timeout=1)
@@ -36,11 +36,12 @@ def parserImageNetStorage(queue,root):
         # finally:
         #     print('error!!! subprocess exit pid  ={}'.format(os.getppid()))
         d = queue.get()
+        print(d)
         if not d:
             print('timeout')
             continue
         if d == 'exit':
-            print('exit pid={}',os.getppid(),end='|')
+            print('exit pid={}',os.getpid(),end='|')
             queue.put(d)
             break
 
@@ -61,7 +62,10 @@ if __name__ == '__main__':
 
     for tar in os.walk(args.train):
         q.put(tar)
+        print('.',end='|')
         # print(tar)
+    print('queue is empyt={}'.format(q.empty()))
+    q.put('exit')
     q.put('exit')
     for task in tasks:
         task.join()

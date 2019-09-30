@@ -23,6 +23,7 @@ class BBoxXmlHandle(xml.sax.ContentHandler):
 
     def characters(self, content):
         self.contents[-1] = self.contents[-1] + content
+        return
 
     def endElement(self,tag):
         content = self.contents.pop().strip()
@@ -46,9 +47,9 @@ class BBoxXmlHandle(xml.sax.ContentHandler):
             self.currentObj['ymax'] = int(content)
         elif tag == 'object':
             self.objects.append(self.currentObj)
-
+        return
     def get_data(self):
-        return {'name':self.name,'path':self.path,'width':self.width,'height':self.height,
+        return {'name':self.name,'class':self.path,'width':self.width,'height':self.height,
                 'depth':self.depth,'bbox':self.objects}
 
     def __str__(self):

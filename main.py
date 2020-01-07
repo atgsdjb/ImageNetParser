@@ -6,8 +6,13 @@ from ILSVRC2012.xml_parser import BBoxXmlHandle
 import xml.sax
 import argparse
 import multiprocessing
+<<<<<<< HEAD
 # from tensorflow.image import decode_jpeg
 from  tensorflow_core._api.v2.image import decode_jpeg
+=======
+from tensorflow.image import decode_jpeg
+# from  tensorflow_core._api.v2.image import decode_jpeg
+>>>>>>> ece973c71eab3e22be5502574cfb3aa59689f102
 import tensorflow as tf
 
 import sys
@@ -16,7 +21,7 @@ import datetime
 os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 bboxPath = path.expanduser('~') + '/data/dataset/ImageNet/ILSVRC2012_bbox_train_v2.tar'
-total_subprocess = 10
+total_subprocess = 4
 
 def parserImageNetBBox():
     tar = TarReader(bboxPath)
@@ -34,10 +39,19 @@ def parserImageNetBBox():
 def deleteCompleted(tar):
     os.remove(tar)
     print("remove complted file {}".format(tar))
+<<<<<<< HEAD
 
 def decodeJpeg(image):
     bmp = decode_jpeg(image)
     return bmp.shape[0],bmp.shape[1],bmp.shape[2], bmp.numpy().tobytes()
+=======
+
+
+def decodeJpeg(image):
+    with tf.Session() as session:
+         bmp = session.run(decode_jpeg(image))
+    return bmp.shape[0],bmp.shape[1],bmp.shape[2], bmp.tobytes()
+>>>>>>> ece973c71eab3e22be5502574cfb3aa59689f102
 
 
 def parserImageNetStorage(tarFile, clazz):

@@ -7,13 +7,15 @@ import xml.sax
 import argparse
 import multiprocessing
 from tensorflow.image import decode_jpeg
+# from  tensorflow_core._api.v2.image import decode_jpeg
 import tensorflow as tf
+
 import sys
 import datetime
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 bboxPath = path.expanduser('~') + '/data/dataset/ImageNet/ILSVRC2012_bbox_train_v2.tar'
-total_subprocess = 10
+total_subprocess = 4
 
 def parserImageNetBBox():
     tar = TarReader(bboxPath)
@@ -29,11 +31,13 @@ def parserImageNetBBox():
 
 
 def deleteCompleted(tar):
-    pass
+    os.remove(tar)
+    print("remove complted file {}".format(tar))
+
 
 def decodeJpeg(image):
     with tf.Session() as session:
-        bmp = session.run(decode_jpeg(image))
+         bmp = session.run(decode_jpeg(image))
     return bmp.shape[0],bmp.shape[1],bmp.shape[2], bmp.tobytes()
 
 

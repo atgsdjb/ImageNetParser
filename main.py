@@ -6,11 +6,7 @@ from ILSVRC2012.xml_parser import BBoxXmlHandle
 import xml.sax
 import argparse
 import multiprocessing
-<<<<<<< HEAD
 # from tensorflow.image import decode_jpeg
-
-
-
 
 
 from  tensorflow_core._api.v2.image import decode_jpeg
